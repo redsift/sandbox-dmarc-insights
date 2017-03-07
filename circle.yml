@@ -1,0 +1,36 @@
+machine:
+  environment:
+    CONTAINER_NAME: quay.io/redsift/sandbox-dmarc-insights
+    NODEJS_VERSION: 6.2.2
+  pre:
+    - sudo curl -L -o /usr/bin/docker 'https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci'
+    - sudo chmod 0755 /usr/bin/docker
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build --build-arg nodev=$NODEJS_VERSION --build-arg esv=es6 -t $NODEJS_VERSION .
+
+test:
+  override:
+    - docker run --entrypoint wkhtmltopdf $NODEJS_VERSION -V
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - docker login -e $QUAY_EMAIL -u $QUAY_USER -p $QUAY_PASS quay.io
+      - |
+        set -e
+        VERSION=$(docker run -u 7438:7438 $NODEJS_VERSION --version)
+        MAJOR_VERSION=(${VERSION//./ })
+        echo "Tagging as $CONTAINER_NAME:$VERSION"
+        docker tag -f $NODEJS_VERSION:latest $CONTAINER_NAME:$VERSION
+        echo "Tagging as $CONTAINER_NAME:$MAJOR_VERSION"
+        docker tag -f $NODEJS_VERSION:latest $CONTAINER_NAME:$MAJOR_VERSION
+        latest=$NODEJS_VERSION:latest
+        echo "Tagging $latest as $CONTAINER_NAME:latest"
+        docker tag $latest $CONTAINER_NAME:latest
+        docker push $CONTAINER_NAME
