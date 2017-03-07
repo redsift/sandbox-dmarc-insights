@@ -15,7 +15,7 @@ dependencies:
 
 test:
   override:
-    - docker run --entrypoint xvfb-run $NODEJS_VERSION wkhtmltopdf -V
+    - docker run --entrypoint wkhtmltopdf $NODEJS_VERSION -V
 
 deployment:
   production:
