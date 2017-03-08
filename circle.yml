@@ -16,7 +16,7 @@ dependencies:
 
 test:
   override:
-    - docker run -v $(pwd)/node-wkhtmltopdf:/tmp --entrypoint npm $NODEJS_VERSION install && npm run headlessTest --prefix /tmp
+    - docker run -v $(pwd)/node-wkhtmltopdf:/tmp --entrypoint npm $NODEJS_VERSION install --prefix /tmp && npm run headlessTest --prefix /tmp
 
 deployment:
   production:
