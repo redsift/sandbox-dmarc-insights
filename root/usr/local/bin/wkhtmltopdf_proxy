@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Proxy is running..."
+xvfb-run -a wkhtmltopdf "${@}"
