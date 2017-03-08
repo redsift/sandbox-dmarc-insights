@@ -13,10 +13,11 @@ dependencies:
     - docker info
     - docker build -t $NODEJS_VERSION .
     - git clone -b headless https://github.com/redsift/node-wkhtmltopdf.git
+    - cd node-wkhtmltopdf && npm install
 
 test:
   override:
-    - docker run -v $(pwd)/node-wkhtmltopdf:/tmp --entrypoint npm $NODEJS_VERSION install --prefix /tmp && npm run headlessTest --prefix /tmp
+    - docker run -v $(pwd)/node-wkhtmltopdf:/tmp --entrypoint npm $NODEJS_VERSION run headlessTest --prefix /tmp
 
 deployment:
   production:
