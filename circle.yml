@@ -17,7 +17,7 @@ dependencies:
 
 test:
   override:
-    - docker run -v $(pwd)/node-wkhtmltopdf:/tmp --entrypoint npm $NODEJS_VERSION run headlessTest --prefix /tmp
+    - docker run -v $(pwd)/node-wkhtmltopdf:/tmp --entrypoint npm $NODEJS_VERSION install -g jasmine && npm run headlessTest --prefix /tmp
 
 deployment:
   production:
