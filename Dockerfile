@@ -5,9 +5,9 @@ ARG WKURL=https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-g
 
 RUN apt-get update && \
     apt-get install -y xvfb xauth libxrender1 fontconfig && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+    apt-get purge -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN curl -s $WKURL | tar xvJf - -C /opt && \
+RUN curl -Ls $WKURL | tar xvJf - -C /opt && \
   ln -s /opt/wkhtmltox/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 
 COPY root /
