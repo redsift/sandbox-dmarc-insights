@@ -1,4 +1,4 @@
-FROM quay.io/redsift/sandbox-javascript:v6.2.2
+FROM quay.io/redsift/sandbox-javascript:v8.10.0
 MAINTAINER Jack Rans email: jack@redsift.io version: 1.0.0
 
 ARG WKURL=https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
