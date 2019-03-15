@@ -27,7 +27,7 @@ commands:
       - run: ./circle/docker_build << parameters.nv >> << parameters.islatest >>
       - run: ./circle/gen_testing_dockerfile << parameters.nv >>
       - run: docker build -t << parameters.nv >>-testing -f Dockerfile.testing .
-      - run: docker run << parameters.nv >>-testing
+      - run: echo "xvfb-run -a jasmine" | docker run --entrypoint=bash -i << parameters.nv >>-testing
 
 jobs:
   build_default:
