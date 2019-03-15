@@ -28,6 +28,8 @@ commands:
       - run: ./circle/gen_testing_dockerfile << parameters.nv >>
       - run: docker build -t << parameters.nv >>-testing -f Dockerfile.testing .
       - run: echo "xvfb-run -a jasmine" | docker run --entrypoint=bash -i << parameters.nv >>-testing
+      - deploy:
+          command: docker push $CONTAINER_NAME
 
 jobs:
   build_default:
