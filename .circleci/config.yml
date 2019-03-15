@@ -1,0 +1,50 @@
+version: 2.1
+
+default:
+  environment: &envvars
+    CONTAINER_NAME: quay.io/redsift/sandbox-dmarc-insights
+    WKHTMLTOPDF_URL: https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+executors:
+  dockexec:
+    shell: /bin/bash
+    environment: *envvars
+    docker:
+      - image: cibuilds/docker:18.06.3-ce
+
+commands:
+  v_build:
+    parameters:
+      nv:
+        type: string
+        default: "8.10.0"
+      islatest:
+        type: boolean
+        default: false
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker login -u $QUAY_USER -p $QUAY_PASS quay.io
+      - run: ./circle/docker_build << parameters.nv >> << parameters.islatest >>
+      - run: ./circle/gen_testing_dockerfile $NODEJS_VERSION
+      - run: docker build -t << parameters.nv >>-testing -f Dockerfile.testing .
+      - run: docker run << parameters.nv >>-testing
+
+jobs:
+  build_default:
+    executor: dockexec
+    steps:
+      - v_build:
+          nv: "8.10.0"
+          islatest: true
+
+  build_placeholder:
+    executor: dockexec
+    steps:
+      - run: echo "Create a job for each extra version with the command defined above"
+
+workflows:
+  version: 2.1
+  build-and-deploy:
+    jobs:
+      - build_default
+      - build_placeholder
