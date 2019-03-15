@@ -16,7 +16,7 @@ echo Building $imageName
 docker build --build-arg WKURL=$WKHTMLTOPDF_URL -t $imageName .
 
 MAJOR_VERSION=(${NV//./ })
-MV_TAG=$CONTAINER_NAME:$MAJOR_VERSION$SUFFIX
+MV_TAG=$CONTAINER_NAME:v$MAJOR_VERSION$SUFFIX
 echo "Tagging as $MV_TAG"
 docker tag $imageName $MV_TAG
 

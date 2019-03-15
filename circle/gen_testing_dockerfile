@@ -12,9 +12,9 @@ imageName=$CONTAINER_NAME:v$NV$SUFFIX
 
 cat << EOF > ./Dockerfile.testing
 FROM ${imageName}
-LABEL author=Christos Vontas
-LABEL email=christos@redsift.io
-LABEL version=1.0.1
+LABEL author="Christos Vontas"
+LABEL email="christos@redsift.io"
+LABEL version="1.0.1"
 
 WORKDIR /tmp
 
