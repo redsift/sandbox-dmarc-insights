@@ -21,7 +21,7 @@ WORKDIR /tmp
 RUN git clone -b headless https://github.com/redsift/node-wkhtmltopdf.git && \
     cd node-wkhtmltopdf && npm i && npm i -g jasmine
 
-CMD ["xvfb-run","-a","jasmine"]
+CMD xvfb-run -a jasmine
 
 EOF
 
