@@ -10,10 +10,14 @@ SUFFIX="-beta"
 if [ $tagName == "release" ]; then
   SUFFIX=""
 fi
-imageName=$CONTAINER_NAME:v$NV$SUFFIX
+tv="v${NV}${SUFFIX}"
+imageName="${CONTAINER_NAME}:${tv}"
+
+echo "Configuring FROM in Dockerfile with tag=${tv}"
+sed "s~^\(FROM quay.io/redsift/sandbox:\).*$~\1${tv}~" < Dockerfile > Dockerfile.versioned
 
 echo Building $imageName
-docker build --build-arg WKURL=$WKHTMLTOPDF_URL -t $imageName .
+docker build --build-arg WKURL=$WKHTMLTOPDF_URL -t $imageName -f Dockerfile.versioned .
 
 MAJOR_VERSION=(${NV//./ })
 MV_TAG=$CONTAINER_NAME:v$MAJOR_VERSION$SUFFIX

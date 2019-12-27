@@ -37,6 +37,12 @@ jobs:
     steps:
       - v_build:
           nv: "8.10.0"
+
+  build_v12:
+    executor: dockexec
+    steps:
+      - v_build:
+          nv: "12.14.0"
           islatest: true
 
   build_placeholder:
@@ -49,3 +55,4 @@ workflows:
   build-and-deploy:
     jobs:
       - build_default
+      - build_v12
